@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stein Eggan Photography Journal</title>
+  <meta name="description" content="A private photographic journal by Stein Eggan. Light, landscapes, places and stories." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="mobile-drawer" id="mobileDrawer">
+    <a href="#journal" onclick="closeDrawer()">Journal</a>
+    <a href="#today" onclick="closeDrawer()"><span data-lang="no">Dagens bilde</span><span data-lang="en">Today</span></a>
+    <a href="#collections" onclick="closeDrawer()"><span data-lang="no">Samlinger</span><span data-lang="en">Collections</span></a>
+    <a href="#expeditions" onclick="closeDrawer()">Expeditions</a>
+    <a href="#archive" onclick="closeDrawer()"><span data-lang="no">Arkiv</span><span data-lang="en">Archive</span></a>
+    <a href="#private" onclick="closeDrawer()">Private Circle</a>
+    <a href="#about" onclick="closeDrawer()"><span data-lang="no">Om</span><span data-lang="en">About</span></a>
+    <div class="mobile-lang">
+      <button id="mlNo" class="active" onclick="setLang('no')">NO</button>
+      <button id="mlEn" onclick="setLang('en')">EN</button>
+    </div>
+  </div>
+
+  <nav id="navbar">
+    <a href="#hero" class="logo">Stein Eggan <span>Photography</span></a>
+    <ul class="nav-links">
+      <li><a href="#journal">Journal</a></li>
+      <li><a href="#today"><span data-lang="no">Dagens bilde</span><span data-lang="en">Today</span></a></li>
+      <li><a href="#collections"><span data-lang="no">Samlinger</span><span data-lang="en">Collections</span></a></li>
+      <li><a href="#expeditions">Expeditions</a></li>
+      <li><a href="#archive"><span data-lang="no">Arkiv</span><span data-lang="en">Archive</span></a></li>
+      <li><a href="#private">Private Circle</a></li>
+      <li><a href="#about"><span data-lang="no">Om</span><span data-lang="en">About</span></a></li>
+    </ul>
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('no')">NO</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+    </div>
+    <button class="hamburger" id="hamburger" onclick="toggleDrawer()" aria-label="Meny">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <section id="hero" class="hero-photo">
+    <img class="hero-img" src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2200&q=90" alt="Mountain landscape in warm morning light">
+    <div class="hero-shade"></div>
+    <div class="hero-content fade-up">
+      <div class="hero-eyebrow"><span data-lang="no">Privat fotografisk journal</span><span data-lang="en">Private photographic journal</span></div>
+      <h1>
+        <span data-lang="no">Light.<br>Landscape.<br><em>Stories.</em></span>
+        <span data-lang="en">Light.<br>Landscape.<br><em>Stories.</em></span>
+      </h1>
+      <p class="hero-sub">
+        <span data-lang="no">En kuratert fotojournal om steder, reiser, lys og øyeblikk. Delt med inviterte gjester og laget med et rolig, fotografisk uttrykk.</span>
+        <span data-lang="en">A curated photographic journal about places, journeys, light and moments. Shared with invited guests and built with a quiet photographic expression.</span>
+      </p>
+      <a href="#today" class="hero-cta"><span data-lang="no">Se dagens bilde</span><span data-lang="en">View today’s photograph</span><span>→</span></a>
+    </div>
+    <div class="hero-meta">
+      <div><strong>01</strong><span>Northern Silence</span></div>
+      <div><strong>24</strong><span><span data-lang="no">Bilder</span><span data-lang="en">Photographs</span></span></div>
+      <div><strong>NO</strong><span>Lofoten</span></div>
+    </div>
+  </section>
+
+  <section id="journal" class="journal-intro">
+    <div class="journal-copy fade-up">
+      <div class="section-tag">Journal</div>
+      <h2>
+        <span data-lang="no">Ikke bare bilder.<br><em>Notater fra reisen.</em></span>
+        <span data-lang="en">Not only images.<br><em>Notes from the journey.</em></span>
+      </h2>
+      <div class="divider"></div>
+      <p class="body-text">
+        <span data-lang="no">Denne siden er bygget som en digital fotobok: store bilder, korte tekster, tydelige steder og personlige refleksjoner. Hvert bilde kan stå alene, men de beste bildene får også en historie.</span>
+        <span data-lang="en">This site is built as a digital photo book: large images, short texts, clear places and personal reflections. Each image can stand alone, but the strongest images also carry a story.</span>
+      </p>
+    </div>
+    <div class="journal-panel fade-up">
+      <span class="panel-label"><span data-lang="no">Fotografens metode</span><span data-lang="en">Photographer’s method</span></span>
+      <ul>
+        <li><span data-lang="no">Vent på lyset</span><span data-lang="en">Wait for the light</span></li>
+        <li><span data-lang="no">La stedet fortelle</span><span data-lang="en">Let the place speak</span></li>
+        <li><span data-lang="no">Skriv bare det som forsterker bildet</span><span data-lang="en">Write only what strengthens the image</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="today" class="featured-section">
+    <div class="section-tag"><span data-lang="no">Dagens bilde</span><span data-lang="en">Today’s photograph</span></div>
+    <div class="featured-layout">
+      <div class="featured-image fade-up">
+        <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=90" alt="Mountain valley in dramatic light">
+      </div>
+      <div class="featured-text fade-up">
+        <span class="photo-count">Image 04 / 18</span>
+        <h2>Morning Light</h2>
+        <p class="photo-meta">Lofoten · Norway · July 2026</p>
+        <div class="divider"></div>
+        <p class="photo-note">
+          <span data-lang="no">Lyset varte ikke mer enn noen få minutter. Jeg rakk bare å gjøre én komposisjon før fjellet forsvant tilbake i skygge.</span>
+          <span data-lang="en">The light lasted no more than a few minutes. I had time for one composition before the mountain moved back into shadow.</span>
+        </p>
+        <div class="technical">
+          <span>Fujifilm X100VI</span><span>23mm</span><span>f/5.6</span><span>ISO 100</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="collections" class="collections-section">
+    <div class="collections-head fade-up">
+      <div>
+        <div class="section-tag"><span data-lang="no">Samlinger</span><span data-lang="en">Collections</span></div>
+        <h2><span data-lang="no">Fotografiske essays</span><span data-lang="en">Photographic essays</span></h2>
+      </div>
+      <p>
+        <span data-lang="no">Serier ordnet etter sted, tema og stemning. Mindre galleri, mer visuell fortelling.</span>
+        <span data-lang="en">Series organised by place, theme and atmosphere. Less gallery, more visual storytelling.</span>
+      </p>
+    </div>
+    <div class="collection-grid">
+      <article class="collection-card large fade-up" style="background-image:url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1600&q=90')"><div><span>01</span><h3>Northern Silence</h3><p>24 photographs · Norway</p></div></article>
+      <article class="collection-card fade-up" style="background-image:url('https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1200&q=90')"><div><span>02</span><h3>Travel Notes</h3><p>18 photographs</p></div></article>
+      <article class="collection-card fade-up" style="background-image:url('https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=1200&q=90')"><div><span>03</span><h3>Architecture</h3><p>12 photographs</p></div></article>
+      <article class="collection-card fade-up" style="background-image:url('https://images.unsplash.com/photo-1493246507139-91e8fad9978e?auto=format&fit=crop&w=1200&q=90')"><div><span>04</span><h3>Woodland Light</h3><p>18 photographs</p></div></article>
+      <article class="collection-card fade-up" style="background-image:url('https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=1200&q=90')"><div><span>05</span><h3>Details</h3><p>9 photographs</p></div></article>
+    </div>
+  </section>
+
+  <section id="expeditions" class="expeditions-section">
+    <div class="expedition-copy fade-up">
+      <div class="section-tag">Expedition Map</div>
+      <h2><span data-lang="no">Steder dokumentert</span><span data-lang="en">Places documented</span></h2>
+      <p class="body-text">
+        <span data-lang="no">Et visuelt kart over reiser, serier og geografiske spor. Hvert sted kan knyttes til bilder, notater og samlinger.</span>
+        <span data-lang="en">A visual map of journeys, series and geographic traces. Each place can connect to images, notes and collections.</span>
+      </p>
+    </div>
+    <div class="map-layout fade-up">
+      <div class="map-visual">
+        <span class="pin pin-1">•</span><span class="pin pin-2">•</span><span class="pin pin-3">•</span><span class="pin pin-4">•</span>
+        <div class="map-caption">Norway · Sweden · Germany · Italy</div>
+      </div>
+      <div class="location-list">
+        <div class="location"><strong>Norway</strong><span>186 photographs · 8 collections</span></div>
+        <div class="location"><strong>Sweden</strong><span>42 photographs · 2 collections</span></div>
+        <div class="location"><strong>Germany</strong><span>31 photographs · 1 collection</span></div>
+        <div class="location"><strong>Italy</strong><span>24 photographs · 1 collection</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="stories" class="story-section">
+    <div class="section-tag"><span data-lang="no">Fotografens notater</span><span data-lang="en">Photographer’s notes</span></div>
+    <article class="story-entry fade-up">
+      <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1400&q=90" alt="Road through landscape">
+      <div>
+        <span class="photo-count">Journal entry 01</span>
+        <h2><span data-lang="no">Verdien av å vente</span><span data-lang="en">The value of waiting</span></h2>
+        <p class="photo-meta">Trøndelag · March 2026</p>
+        <p class="body-text"><span data-lang="no">Noen bilder oppstår ikke fordi motivet er spektakulært, men fordi lyset til slutt gjør stedet stille nok til å se.</span><span data-lang="en">Some images do not appear because the subject is spectacular, but because the light eventually makes the place quiet enough to see.</span></p>
+      </div>
+    </article>
+  </section>
+
+  <section id="archive" class="archive-section">
+    <div class="section-tag"><span data-lang="no">Arkiv</span><span data-lang="en">Archive</span></div>
+    <h2><span data-lang="no">Fotografisk arkiv</span><span data-lang="en">Photography archive</span></h2>
+    <div class="archive-grid fade-up">
+      <a href="#collections"><strong>2026</strong><span>July · June · May</span></a>
+      <a href="#collections"><strong>2025</strong><span>Travel · Norway · Details</span></a>
+      <a href="#collections"><strong>2024</strong><span>Early studies · Places</span></a>
+    </div>
+  </section>
+
+  <section id="private" class="private-section">
+    <div class="private-card fade-up">
+      <div class="section-tag">Private Circle</div>
+      <h2><span data-lang="no">Kun for inviterte</span><span data-lang="en">Invitation only</span></h2>
+      <p><span data-lang="no">Private samlinger, reisebilder og personlige serier kan deles med en begrenset krets. Denne delen kan senere kobles til passord, innlogging eller medlemsområde.</span><span data-lang="en">Private collections, travel images and personal series can be shared with a limited circle. This section can later be connected to password access, sign-in or a members area.</span></p>
+      <a href="mailto:post@example.com" class="hero-cta"><span data-lang="no">Be om tilgang</span><span data-lang="en">Request access</span><span>→</span></a>
+    </div>
+  </section>
+
+  <section id="about" class="about-section">
+    <div class="about-image fade-up"><img src="https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1300&q=90" alt="Calm interior with warm natural light"></div>
+    <div class="about-copy fade-up">
+      <div class="section-tag">About</div>
+      <h2><span data-lang="no">Fotografi begynte som en måte å dokumentere steder.</span><span data-lang="en">Photography began as a way to document places.</span></h2>
+      <div class="divider"></div>
+      <p class="body-text"><span data-lang="no">Over tid har det blitt en måte å dokumentere perspektiv på. Siden er laget som et personlig arkiv for bilder, reiser og notater - mer fotobok enn sosial kanal.</span><span data-lang="en">Over time it became a way to document perspective. This site is built as a personal archive for images, journeys and notes - more photo book than social channel.</span></p>
+      <p class="signature">Stein Eggan · Trondheim, Norway</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-logo">Stein Eggan <span>Photography</span></div>
+    <span>© 2026 · Private photographic journal</span>
+    <span>Trondheim · Norway</span>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
