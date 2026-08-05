@@ -52,3 +52,98 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 });
+document.addEventListener('DOMContentLoaded', () => {
+
+  const galleries = {
+
+    1: [
+      'bilder/northern1.jpg',
+      'bilder/northern2.jpg',
+      'bilder/northern3.jpg'
+    ],
+
+    2: [
+      'bilder/travel1.jpg',
+      'bilder/travel2.jpg',
+      'bilder/travel3.jpg'
+    ],
+
+    3: [
+      'bilder/architecture1.jpg',
+      'bilder/architecture2.jpg'
+    ],
+
+    4: [
+      'bilder/woodland1.jpg',
+      'bilder/woodland2.jpg'
+    ],
+
+    5: [
+      'bilder/details1.jpg',
+      'bilder/details2.jpg'
+    ]
+
+  };
+
+  document.querySelectorAll('.collection-card').forEach(card => {
+
+    card.style.cursor = 'pointer';
+
+    card.addEventListener('click', () => {
+
+      const id = card.dataset.gallery;
+      const images = galleries[id];
+
+      if (!images || images.length === 0) return;
+
+      let current = 0;
+
+      const overlay = document.createElement('div');
+
+      overlay.style.cssText = `
+        position:fixed;
+        inset:0;
+        background:rgba(0,0,0,.95);
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        z-index:9999;
+      `;
+
+      overlay.innerHTML = `
+        <button id="prevBtn"
+                style="position:absolute;left:20px;color:white;font-size:40px;background:none;border:none;">
+          ❮
+        </button>
+
+        <img id="galleryImage"
+             src="${images[0]}"
+             style="max-width:90%;max-height:90%;">
+
+        <button ckground:none;border:none;">
+          ❯
+        </button>
+      `;
+
+      document.body.appendChild(overlay);
+
+      const img = document.getElementById('galleryImage');
+
+      document.getElementById('nextBtn').onclick = () => {
+        current = (current + 1) % images.length;
+        img.src = images[current];
+      };
+
+      document.getElementById('prevBtn').onclick = () => {
+        current = (current - 1 + images.length) % images.length;
+        img.src = images[current];
+      };
+
+      overlay.onclick = (e) => {
+        if (e.target === overlay) overlay.remove();
+      };
+
+    });
+  });
+
+});
