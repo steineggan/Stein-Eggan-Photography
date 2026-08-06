@@ -1,95 +1,83 @@
-function setLang(lang){document.body.classList.toggle('en',lang==='en');document.querySelectorAll('.lang-btn').forEach(function(btn,i){btn.classList.toggle('active',(i===0&&lang==='no')||(i===1&&lang==='en'));});var mlNo=document.getElementById('mlNo');var mlEn=document.getElementById('mlEn');if(mlNo&&mlEn){mlNo.classList.toggle('active',lang==='no');mlEn.classList.toggle('active',lang==='en');}}function toggleDrawer(){var drawer=document.getElementById('mobileDrawer');var btn=document.getElementById('hamburger');var isOpen=drawer.classList.toggle('open');btn.classList.toggle('open',isOpen);document.body.style.overflow=isOpen?'hidden':'';}function closeDrawer(){document.getElementById('mobileDrawer').classList.remove('open');document.getElementById('hamburger').classList.remove('open');document.body.style.overflow='';}window.addEventListener('scroll',function(){document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>40);});var observer=new IntersectionObserver(function(entries){entries.forEach(function(e,i){if(e.isIntersecting){e.target.style.animationDelay=(i*.08)+'s';e.target.classList.add('visible');observer.unobserve(e.target);}});},{threshold:.12});document.querySelectorAll('.fade-up').forEach(function(el){observer.observe(el);});
-document.addEventListener('DOMContentLoaded', () => {
+function setLang(lang) {
+  document.body.classList.toggle('en', lang === 'en');
 
-  const essayCards = document.querySelectorAll('.essay-card');
-
-  essayCards.forEach(card => {
-
-    card.addEventListener('click', () => {
-
-      const images = card.querySelectorAll('img');
-
-      if(images.length < 2) return;
-
-      let current = 0;
-
-      const overlay = document.createElement('div');
-      overlay.style.cssText = `
-        position:fixed;
-        inset:0;
-        background:rgba(0,0,0,.95);
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        z-index:9999;
-      `;
-
-      overlay.innerHTML = `
-        <button id="prevPhoto" style="position:absolute;left:20px;font-size:2rem;color:white;background:none;border:none;cursor:pointer;">❮</button>
-        <img id="photoViewer" src="${images[0].src}" styleyle="position:absolute;right:20px;font-size:2rem;color:white;background:none;border:none;cursor:pointer;">❯</button>
-      `;
-
-      document.body.appendChild(overlay);
-
-      const viewer = overlay.querySelector('#photoViewer');
-
-      overlay.querySelector('#nextPhoto').onclick = () => {
-        current = (current + 1) % images.length;
-        viewer.src = images[current].src;
-      };
-
-      overlay.querySelector('#prevPhoto').onclick = () => {
-        current = (current - 1 + images.length) % images.length;
-        viewer.src = images[current].src;
-      };
-
-      overlay.onclick = (e) => {
-        if (e.target === overlay) overlay.remove();
-      };
-
-    });
-
+  document.querySelectorAll('.lang-btn').forEach(function(btn, i) {
+    btn.classList.toggle(
+      'active',
+      (i === 0 && lang === 'no') || (i === 1 && lang === 'en')
+    );
   });
 
+  var mlNo = document.getElementById('mlNo');
+  var mlEn = document.getElementById('mlEn');
+
+  if (mlNo && mlEn) {
+    mlNo.classList.toggle('active', lang === 'no');
+    mlEn.classList.toggle('active', lang === 'en');
+  }
+}
+
+function toggleDrawer() {
+  var drawer = document.getElementById('mobileDrawer');
+  var btn = document.getElementById('hamburger');
+  var isOpen = drawer.classList.toggle('open');
+
+  btn.classList.toggle('open', isOpen);
+  document.body.style.overflow = isOpen ? 'hidden' : '';
+}
+
+function closeDrawer() {
+  document.getElementById('mobileDrawer').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+window.addEventListener('scroll', function() {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
 });
-document.addEventListener('DOMContentLoaded', () => {
+
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e, i) {
+    if (e.isIntersecting) {
+      e.target.style.animationDelay = (i * 0.08) + 's';
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.fade-up').forEach(function(el) {
+  observer.observe(el);
+});
+
+document.addEventListener('DOMContentLoaded', function() {
 
   const galleries = {
-
     1: [
-      'images/northern1.jpg',
-      'images/northern2.jpg',
-      'images/northern3.jpg'
+      'images/northern-silence/001.jpg'
     ],
 
     2: [
-      'images/travel-notes/Brazil_jan2015.jpg',
-      
+      'images/travel-notes/Brazil_jan2015.jpg'
     ],
 
     3: [
-      'images/architecture1.jpg',
-      'images/architecture2.jpg'
+      'images/architecture/001.jpg'
     ],
 
     4: [
-      'images/woodland1.jpg',
-      'images/woodland2.jpg'
+      'images/people/001.jpg'
     ],
 
     5: [
-      'images/details1.jpg',
-      'images/details2.jpg'
+      'images/details/001.jpg'
     ]
-
   };
 
-  document.querySelectorAll('.collection-card').forEach(card => {
-
+  document.querySelectorAll('.collection-card').forEach(function(card) {
     card.style.cursor = 'pointer';
 
-    card.addEventListener('click', () => {
-
+    card.addEventListener('click', function() {
       const id = card.dataset.gallery;
       const images = galleries[id];
 
@@ -100,53 +88,81 @@ document.addEventListener('DOMContentLoaded', () => {
       const overlay = document.createElement('div');
 
       overlay.style.cssText = `
-        position:fixed;
-        inset:0;
-        background:rgba(0,0,0,.95);
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        z-index:9999;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,.95);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
       `;
 
       overlay.innerHTML = `
         <button id="prevBtn"
-                style="position:absolute;left:20px;color:white;font-size:40px;background:none;border:none;">
+          style="position:absolute;left:24px;color:white;font-size:52px;background:none;border:none;cursor:pointer;z-index:10000;">
           ❮
         </button>
 
-        <img id="galleryImage"
-             src="${images[0]}"
-             style="max-width:90%;max-height:90%;">
+        ${images[current]}
 
-        <button ckground:none;border:none;">
+        <button id="nextBtn"
+          style="position:absolute;right:24px;color:white;font-size:52px;background:none;border:none;cursor:pointer;z-index:10000;">
           ❯
+        </button>
+
+        <button id="closeBtn"
+          style="position:absolute;top:22px;right:28px;color:white;font-size:34px;background:none;border:none;cursor:pointer;z-index:10000;">
+          ×
         </button>
       `;
 
       document.body.appendChild(overlay);
 
       const img = document.getElementById('galleryImage');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const closeBtn = document.getElementById('closeBtn');
 
-      document.getElementById('nextBtn').onclick = () => {
+      prevBtn.onclick = function(e) {
+        e.stopPropagation();
+
+        if (current === 0) {
+          overlay.remove();
+          return;
+        }
+
+        current = current - 1;
+        img.src = images[current];
+      };
+
+      nextBtn.onclick = function(e) {
+        e.stopPropagation();
+
+        if (images.length === 1) {
+          return;
+        }
+
         current = (current + 1) % images.length;
         img.src = images[current];
       };
 
-     document.getElementById('prevBtn').onclick = (e) => {
-  e.stopPropagation();
-    overlay.remove();
-  } else {
-    current = (current - 1 + images.length) % images.length;
-    img.src = images[current];
-  }
-};
+      closeBtn.onclick = function(e) {
+        e.stopPropagation();
+        overlay.remove();
+      };
 
-overlay.onclick = (e) => {
-  if (e.target === overlay) overlay.remove();
-};
+      overlay.onclick = function(e) {
+        if (e.target === overlay) {
+          overlay.remove();
+        }
+      };
 
+      document.addEventListener('keydown', function closeOnEscape(e) {
+        if (e.key === 'Escape') {
+          overlay.remove();
+          document.removeEventListener('keydown', closeOnEscape);
+        }
+      });
     });
   });
-
 });
