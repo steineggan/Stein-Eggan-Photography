@@ -133,8 +133,8 @@ document.addEventListener('DOMContentLoaded', () => {
         img.src = images[current];
       };
 
-     document.getElementById('prevBtn').onclick = () => {
-  if (images.length === 1) {
+     document.getElementById('prevBtn').onclick = (e) => {
+  e.stopPropagation();
     overlay.remove();
   } else {
     current = (current - 1 + images.length) % images.length;
