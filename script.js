@@ -61,83 +61,59 @@ document.addEventListener('DOMContentLoaded', function() {
     item.classList.add('visible');
   });
 
-  var galleries = {
-    '2': [
-      'images/travel-notes/Brazil_jan2015.jpg'
-    ]
-  };
+  var travelNotesImage = 'images/travel-notes/Brazil_jan2015.jpg';
 
-  var cards = document.querySelectorAll('.collection-card[data-gallery]');
+  var travelCard = document.querySelector('.collection-card[data-gallery="2"]');
 
-  cards.forEach(function(card) {
-    card.style.cursor = 'pointer';
+  if (!travelCard) {
+    return;
+  }
 
-    card.addEventListener('click', function() {
-      var galleryId = card.getAttribute('data-gallery');
-      var images = galleries[galleryId];
+  travelCard.style.cursor = 'pointer';
 
-      if (!images || images.length === 0) {
-        return;
-      }
+  travelCard.addEventListener('click', function() {
+    var overlay = document.createElement('div');
 
-      var current = 0;
+    overlay.style.position = 'fixed';
+    overlay.style.left = '0';
+    overlay.style.top = '0';
+    overlay.style.right = '0';
+    overlay.style.bottom = '0';
+    overlay.style.background = 'rgba(0,0,0,0.94)';
+    overlay.style.display = 'flex';
+    overlay.style.alignItems = 'center';
+    overlay.style.justifyContent = 'center';
+    overlay.style.zIndex = '9999';
+    overlay.style.padding = '40px';
 
-      var overlay = document.createElement('div');
-      overlay.style.position = 'fixed';
-      overlay.style.inset = '0';
-      overlay.style.background = 'rgba(0,0,0,0.94)';
-      overlay.style.display = 'flex';
-      overlay.style.justifyContent = 'center';
-      overlay.style.alignItems = 'center';
-      overlay.style.zIndex = '9999';
-      overlay.style.padding = '40px';
+    var image = document.createElement('img');
 
-      var image = document.createElement('img');
-      image.src = images[current];
-      image.alt = 'Travel Notes';
-      image.style.maxWidth = '92vw';
-      image.style.maxHeight = '88vh';
-      image.style.objectFit = 'contain';
+    image.src = travelNotesImage;
+    image.alt = 'Brazil';
+    image.style.maxWidth = '92vw';
+    image.style.maxHeight = '88vh';
+    image.style.objectFit = 'contain';
+    image.style.display = 'block';
 
-      var prevButton = document.createElement('button');
-      prevButton.type = 'button';
-      prevButton.textContent = '‹';
-      prevButton.style.position = 'absolute';
-      prevButton.style.left = '24px';
-      prevButton.style.top = '50%';
-      prevButton.style.transform = 'translateY(-50%)';
-      prevButton.style.color = 'white';
-      prevButton.style.background = 'none';
-      prevButton.style.border = 'none';
-      prevButton.style.fontSize = '70px';
-      prevButton.style.cursor = 'pointer';
+    var backButton = document.createElement('button');
 
-      var nextButton = document.createElement('button');
-      nextButton.type = 'button';
-      nextButton.textContent = '›';
-      nextButton.style.position = 'absolute';
-      nextButton.style.right = '24px';
-      nextButton.style.top = '50%';
-      nextButton.style.transform = 'translateY(-50%)';
-      nextButton.style.color = 'white';
-      nextButton.style.background = 'none';
-      nextButton.style.border = 'none';
-      nextButton.style.fontSize = '70px';
-      nextButton.style.cursor = 'pointer';
-      nextButton.style.opacity = '0.25';
+    backButton.type = 'button';
+    backButton.textContent = 'Tilbake';
+    backButton.style.position = 'absolute';
+    backButton.style.left = '24px';
+    backButton.style.top = '24px';
+    backButton.style.color = 'white';
+    backButton.style.background = 'rgba(0,0,0,0.35)';
+    backButton.style.border = '1px solid rgba(255,255,255,0.35)';
+    backButton.style.padding = '10px 16px';
+    backButton.style.fontSize = '14px';
+    backButton.style.letterSpacing = '0.12em';
+    backButton.style.textTransform = 'uppercase';
+    backButton.style.cursor = 'pointer';
 
-      var closeButton = document.createElement('button');
-      closeButton.type = 'button';
-      closeButton.textContent = '×';
-      closeButton.style.position = 'absolute';
-      closeButton.style.top = '22px';
-      closeButton.style.right = '28px';
-      closeButton.style.color = 'white';
-      closeButton.style.background = 'none';
-      closeButton.style.border = 'none';
-      closeButton.style.fontSize = '42px';
-      closeButton.style.cursor = 'pointer';
+    var closeButton = document.createElement('button');
 
-      overlay.appendChild(image);
-      overlay.appendChild(prevButton);
-      overlay.appendChild(nextButton)
+    closeButton.type = 'button';
+    closeButton.textContent = 'Lukk';
+    closeButton.style.position = 'absolute';
+    closeButton.style.
