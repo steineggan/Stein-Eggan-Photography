@@ -52,7 +52,7 @@ document.querySelectorAll('.fade-up').forEach(function(el) {
 
 document.addEventListener('DOMContentLoaded', function() {
 
-  const galleries = {
+  var galleries = {
     1: [
       'images/northern-silence/001.jpg'
     ],
@@ -78,50 +78,41 @@ document.addEventListener('DOMContentLoaded', function() {
     card.style.cursor = 'pointer';
 
     card.addEventListener('click', function() {
-      const id = card.dataset.gallery;
-      const images = galleries[id];
+      var id = card.getAttribute('data-gallery');
+      var images = galleries[id];
 
-      if (!images || images.length === 0) return;
+      if (!images || images.length === 0) {
+        return;
+      }
 
-      let current = 0;
+      var current = 0;
 
-      const overlay = document.createElement('div');
+      var overlay = document.createElement('div');
 
-      overlay.style.cssText = `
-        position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,.95);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
-      `;
+      overlay.style.cssText =
+        'position:fixed;' +
+        'inset:0;' +
+        'background:rgba(0,0,0,.95);' +
+        'display:flex;' +
+        'justify-content:center;' +
+        'align-items:center;' +
+        'z-index:9999;';
 
-      overlay.innerHTML = `
-        <button id="prevBtn"
-          style="position:absolute;left:24px;color:white;font-size:52px;background:none;border:none;cursor:pointer;z-index:10000;">
-          ❮
-        </button>
+      overlay.innerHTML =
+        '<button id="prevBtn" style="position:absolute;left:24px;color:white;font-size:52px;background:none;border:none;cursor:pointer;z-index:10000;">❮</button>' +
 
-        ${images[current]}
+        '' + images[current] + '' +
 
-        <button id="nextBtn"
-          style="position:absolute;right:24px;color:white;font-size:52px;background:none;border:none;cursor:pointer;z-index:10000;">
-          ❯
-        </button>
+        '<button id="nextBtn" style="position:absolute;right:24px;color:white;font-size:52px;background:none;border:none;cursor:pointer;z-index:10000;">❯</button>' +
 
-        <button id="closeBtn"
-          style="position:absolute;top:22px;right:28px;color:white;font-size:34px;background:none;border:none;cursor:pointer;z-index:10000;">
-          ×
-        </button>
-      `;
+        '<button id="closeBtn" style="position:absolute;top:22px;right:28px;color:white;font-size:34px;background:none;border:none;cursor:pointer;z-index:10000;">×</button>';
 
       document.body.appendChild(overlay);
 
-      const img = document.getElementById('galleryImage');
-      const prevBtn = document.getElementById('prevBtn');
-      const nextBtn = document.getElementById('nextBtn');
-      const closeBtn = document.getElementById('closeBtn');
+      var img = document.getElementById('galleryImage');
+      var prevBtn = document.getElementById('prevBtn');
+      var nextBtn = document.getElementById('nextBtn');
+      var closeBtn = document.getElementById('closeBtn');
 
       prevBtn.onclick = function(e) {
         e.stopPropagation();
@@ -156,8 +147,6 @@ document.addEventListener('DOMContentLoaded', function() {
           overlay.remove();
         }
       };
-
     });
   });
-
 });
