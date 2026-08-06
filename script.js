@@ -64,8 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     2: [
       'images/travel-notes/Brazil_jan2015.jpg',
-      'images/travel2.jpg',
-      'images/travel3.jpg'
+      
     ],
 
     3: [
