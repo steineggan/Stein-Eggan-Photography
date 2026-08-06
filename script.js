@@ -157,12 +157,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       };
 
-      document.addEventListener('keydown', function closeOnEscape(e) {
-        if (e.key === 'Escape') {
-          overlay.remove();
-          document.removeEventListener('keydown', closeOnEscape);
-        }
-      });
     });
   });
+
 });
