@@ -46,8 +46,7 @@ function showAllFadeItems() {
 }
 
 function openTravelNotes() {
-  function openTravelNotes() {
-  var images = [
+   var images = [
     'images/travel-notes/Brazil_jan2015.jpg',
     'images/travel-notes/mississippi_des2007.jpg'
   ];
