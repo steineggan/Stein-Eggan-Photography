@@ -20,15 +20,21 @@ function setLang(lang) {
 function toggleDrawer() {
   var drawer = document.getElementById('mobileDrawer');
   var btn = document.getElementById('hamburger');
-  var isOpen = drawer.classList.toggle('open');
 
+  if (!drawer || !btn) return;
+
+  var isOpen = drawer.classList.toggle('open');
   btn.classList.toggle('open', isOpen);
   document.body.style.overflow = isOpen ? 'hidden' : '';
 }
 
 function closeDrawer() {
-  document.getElementById('mobileDrawer').classList.remove('open');
-  document.getElementById('hamburger').classList.remove('open');
+  var drawer = document.getElementById('mobileDrawer');
+  var btn = document.getElementById('hamburger');
+
+  if (drawer) drawer.classList.remove('open');
+  if (btn) btn.classList.remove('open');
+
   document.body.style.overflow = '';
 }
 
@@ -39,49 +45,57 @@ window.addEventListener('scroll', function() {
   }
 });
 
-var observer = new IntersectionObserver(function(entries) {
-  entries.forEach(function(e, i) {
-    if (e.isIntersecting) {
-      e.target.style.animationDelay = (i * 0.08) + 's';
-      e.target.classList.add('visible');
-      observer.unobserve(e.target);
-    }
-  });
-}, { threshold: 0.12 });
-
-document.querySelectorAll('.fade-up').forEach(function(el) {
-  observer.observe(el);
-});
-
 document.addEventListener('DOMContentLoaded', function() {
+  if ('IntersectionObserver' in window) {
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e, i) {
+        if (e.isIntersecting) {
+          e.target.style.animationDelay = (i * 0.08) + 's';
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.fade-up').forEach(function(el) {
+      observer.observe(el);
+    });
+  } else {
+    document.querySelectorAll('.fade-up').forEach(function(el) {
+      el.classList.add('visible');
+    });
+  }
+
   var galleries = {
-    1: [
+    '1': [
       'images/northern-silence/001.jpg'
     ],
 
-    2: [
+    '2': [
       'images/travel-notes/Brazil_jan2015.jpg'
     ],
 
-    3: [
+    '3': [
       'images/architecture/001.jpg'
     ],
 
-    4: [
+    '4': [
       'images/people/001.jpg'
     ],
 
-    5: [
+    '5': [
       'images/details/001.jpg'
     ]
   };
 
-  document.querySelectorAll('.collection-card').forEach(function(card) {
+  var cards = document.querySelectorAll('.collection-card[data-gallery]');
+
+  cards.forEach(function(card) {
     card.style.cursor = 'pointer';
 
     card.addEventListener('click', function() {
-      var id = card.getAttribute('data-gallery');
-      var images = galleries[id];
+      var galleryId = card.getAttribute('data-gallery');
+      var images = galleries[galleryId];
 
       if (!images || images.length === 0) {
         return;
@@ -90,86 +104,46 @@ document.addEventListener('DOMContentLoaded', function() {
       var current = 0;
 
       var overlay = document.createElement('div');
+      overlay.id = 'photoOverlay';
+      overlay.setAttribute('role', 'dialog');
+      overlay.setAttribute('aria-label', 'Photo viewer');
 
-      overlay.style.cssText =
-        'position:fixed;' +
-        'inset:0;' +
-        'background:rgba(0,0,0,.95);' +
-        'display:flex;' +
-        'justify-content:center;' +
-        'align-items:center;' +
-        'z-index:9999;';
+      overlay.style.cssText = [
+        'position:fixed',
+        'inset:0',
+        'background:rgba(0,0,0,0.94)',
+        'display:flex',
+        'justify-content:center',
+        'align-items:center',
+        'z-index:9999',
+        'padding:4vh 5vw'
+      ].join(';');
 
-      overlay.innerHTML =
-        '<button id="prevBtn" style="position:absolute;left:24px;color:white;font-size:52px;background:none;border:none;cursor:pointer;z-index:10000;">❮</button>' +
+      var img = document.createElement('img');
+      img.id = 'galleryImage';
+      img.src = images[current];
+      img.alt = 'Selected photograph';
+      img.style.cssText = [
+        'max-width:92vw',
+        'max-height:88vh',
+        'width:auto',
+        'height:auto',
+        'object-fit:contain',
+        'box-shadow:0 20px 80px rgba(0,0,0,0.45)'
+      ].join(';');
 
-        '' + images[current] + '">' +
-
-        '<button id="nextBtn" style="position:absolute;right:24px;color:white;font-size:52px;background:none;border:none;cursor:pointer;z-index:10000;">❯</button>' +
-
-        '<button id="closeBtn" style="position:absolute;top:22px;right:28px;color:white;font-size:34px;background:none;border:none;cursor:pointer;z-index:10000;">×</button>' +
-
-        '<div id="imageError" style="display:none;position:absolute;bottom:30px;left:50%;transform:translateX(-50%);color:white;background:rgba(0,0,0,.7);padding:12px 18px;font-size:14px;font-family:Arial,sans-serif;">Bildet kunne ikke lastes.</div>';
-
-      document.body.appendChild(overlay);
-      document.body.style.overflow = 'hidden';
-
-      var img = document.getElementById('galleryImage');
-      var prevBtn = document.getElementById('prevBtn');
-      var nextBtn = document.getElementById('nextBtn');
-      var closeBtn = document.getElementById('closeBtn');
-      var imageError = document.getElementById('imageError');
-
-      img.onerror = function() {
-        imageError.style.display = 'block';
-        imageError.innerHTML = 'Bildet kunne ikke lastes: ' + img.src;
-      };
-
-      function closeOverlay() {
-        overlay.remove();
-        document.body.style.overflow = '';
-      }
-
-      prevBtn.onclick = function(e) {
-        e.stopPropagation();
-
-        if (current === 0) {
-          closeOverlay();
-          return;
-        }
-
-        current = current - 1;
-        img.src = images[current];
-      };
-
-      nextBtn.onclick = function(e) {
-        e.stopPropagation();
-
-        if (images.length === 1) {
-          return;
-        }
-
-        current = (current + 1) % images.length;
-        img.src = images[current];
-      };
-
-      closeBtn.onclick = function(e) {
-        e.stopPropagation();
-        closeOverlay();
-      };
-
-      overlay.onclick = function(e) {
-        if (e.target === overlay) {
-          closeOverlay();
-        }
-      };
-
-      document.addEventListener('keydown', function closeOnEscape(e) {
-        if (e.key === 'Escape') {
-          closeOverlay();
-          document.removeEventListener('keydown', closeOnEscape);
-        }
-      });
-    });
-  });
-});
+      var prevBtn = document.createElement('button');
+      prevBtn.id = 'prevBtn';
+      prevBtn.type = 'button';
+      prevBtn.innerHTML = '&#10094;';
+      prevBtn.setAttribute('aria-label', 'Tilbake');
+      prevBtn.style.cssText = [
+        'position:absolute',
+        'left:24px',
+        'top:50%',
+        'transform:translateY(-50%)',
+        'color:white',
+        'font-size:56px',
+        'line-height:1',
+        'background:none',
+   
