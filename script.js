@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
         img.src = images[current];
       };
 
-      document.getElementById('prevBtn').onclick = () => {
+     document.getElementById('prevBtn').onclick = () => {
   if (images.length === 1) {
     overlay.remove();
   } else {
@@ -141,11 +141,10 @@ document.addEventListener('DOMContentLoaded', () => {
     img.src = images[current];
   }
 };
-      };
 
-      overlay.onclick = (e) => {
-        if (e.target === overlay) overlay.remove();
-      };
+overlay.onclick = (e) => {
+  if (e.target === overlay) overlay.remove();
+};
 
     });
   });
