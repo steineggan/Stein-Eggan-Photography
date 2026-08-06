@@ -134,8 +134,13 @@ document.addEventListener('DOMContentLoaded', () => {
       };
 
       document.getElementById('prevBtn').onclick = () => {
-        current = (current - 1 + images.length) % images.length;
-        img.src = images[current];
+  if (images.length === 1) {
+    overlay.remove();
+  } else {
+    current = (current - 1 + images.length) % images.length;
+    img.src = images[current];
+  }
+};
       };
 
       overlay.onclick = (e) => {
