@@ -33,7 +33,10 @@ function closeDrawer() {
 }
 
 window.addEventListener('scroll', function() {
-  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
+  var navbar = document.getElementById('navbar');
+  if (navbar) {
+    navbar.classList.toggle('scrolled', window.scrollY > 40);
+  }
 });
 
 var observer = new IntersectionObserver(function(entries) {
@@ -100,24 +103,38 @@ document.addEventListener('DOMContentLoaded', function() {
       overlay.innerHTML =
         '<button id="prevBtn" style="position:absolute;left:24px;color:white;font-size:52px;background:none;border:none;cursor:pointer;z-index:10000;">❮</button>' +
 
-        '' + images[current] + '' +
+        '' + images[current] + '">' +
 
         '<button id="nextBtn" style="position:absolute;right:24px;color:white;font-size:52px;background:none;border:none;cursor:pointer;z-index:10000;">❯</button>' +
 
-        '<button id="closeBtn" style="position:absolute;top:22px;right:28px;color:white;font-size:34px;background:none;border:none;cursor:pointer;z-index:10000;">×</button>';
+        '<button id="closeBtn" style="position:absolute;top:22px;right:28px;color:white;font-size:34px;background:none;border:none;cursor:pointer;z-index:10000;">×</button>' +
+
+        '<div id="imageError" style="display:none;position:absolute;bottom:30px;left:50%;transform:translateX(-50%);color:white;background:rgba(0,0,0,.7);padding:12px 18px;font-size:14px;font-family:Arial,sans-serif;">Bildet kunne ikke lastes.</div>';
 
       document.body.appendChild(overlay);
+      document.body.style.overflow = 'hidden';
 
       var img = document.getElementById('galleryImage');
       var prevBtn = document.getElementById('prevBtn');
       var nextBtn = document.getElementById('nextBtn');
       var closeBtn = document.getElementById('closeBtn');
+      var imageError = document.getElementById('imageError');
+
+      img.onerror = function() {
+        imageError.style.display = 'block';
+        imageError.innerHTML = 'Bildet kunne ikke lastes: ' + img.src;
+      };
+
+      function closeOverlay() {
+        overlay.remove();
+        document.body.style.overflow = '';
+      }
 
       prevBtn.onclick = function(e) {
         e.stopPropagation();
 
         if (current === 0) {
-          overlay.remove();
+          closeOverlay();
           return;
         }
 
@@ -138,18 +155,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
       closeBtn.onclick = function(e) {
         e.stopPropagation();
-        overlay.remove();
+        closeOverlay();
       };
 
       overlay.onclick = function(e) {
         if (e.target === overlay) {
-          overlay.remove();
+          closeOverlay();
         }
       };
 
       document.addEventListener('keydown', function closeOnEscape(e) {
         if (e.key === 'Escape') {
-          overlay.remove();
+          closeOverlay();
           document.removeEventListener('keydown', closeOnEscape);
         }
       });
