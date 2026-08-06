@@ -51,7 +51,6 @@ document.querySelectorAll('.fade-up').forEach(function(el) {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-
   var galleries = {
     1: [
       'images/northern-silence/001.jpg'
@@ -147,6 +146,13 @@ document.addEventListener('DOMContentLoaded', function() {
           overlay.remove();
         }
       };
+
+      document.addEventListener('keydown', function closeOnEscape(e) {
+        if (e.key === 'Escape') {
+          overlay.remove();
+          document.removeEventListener('keydown', closeOnEscape);
+        }
+      });
     });
   });
 });
