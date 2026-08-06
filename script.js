@@ -46,7 +46,13 @@ function showAllFadeItems() {
 }
 
 function openTravelNotes() {
-  var imageUrl = 'images/travel-notes/Brazil_jan2015.jpg';
+  function openTravelNotes() {
+  var images = [
+    'images/travel-notes/Brazil_jan2015.jpg',
+    'images/travel-notes/mississippi_des2007.jpg'
+  ];
+
+  var currentImage = 0;
 
   var oldOverlay = document.getElementById('travelNotesOverlay');
   if (oldOverlay) oldOverlay.remove();
@@ -66,7 +72,7 @@ function openTravelNotes() {
   overlay.style.padding = '40px';
 
   var image = document.createElement('img');
-  image.src = imageUrl;
+  image.src = images[currentImage];
   image.alt = 'Brazil';
   image.style.maxWidth = '92vw';
   image.style.maxHeight = '86vh';
