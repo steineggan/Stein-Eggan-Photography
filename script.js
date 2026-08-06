@@ -57,30 +57,30 @@ document.addEventListener('DOMContentLoaded', () => {
   const galleries = {
 
     1: [
-      'bilder/northern1.jpg',
-      'bilder/northern2.jpg',
-      'bilder/northern3.jpg'
+      'images/northern1.jpg',
+      'images/northern2.jpg',
+      'images/northern3.jpg'
     ],
 
     2: [
-      'bilder/travel1.jpg',
-      'bilder/travel2.jpg',
-      'bilder/travel3.jpg'
+      'images/travel1.jpg',
+      'images/travel2.jpg',
+      'images/travel3.jpg'
     ],
 
     3: [
-      'bilder/architecture1.jpg',
-      'bilder/architecture2.jpg'
+      'images/architecture1.jpg',
+      'images/architecture2.jpg'
     ],
 
     4: [
-      'bilder/woodland1.jpg',
-      'bilder/woodland2.jpg'
+      'images/woodland1.jpg',
+      'images/woodland2.jpg'
     ],
 
     5: [
-      'bilder/details1.jpg',
-      'bilder/details2.jpg'
+      'images/details1.jpg',
+      'images/details2.jpg'
     ]
 
   };
