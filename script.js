@@ -2,6 +2,7 @@ function setLang(lang) {
   document.body.classList.toggle('en', lang === 'en');
 
   var langButtons = document.querySelectorAll('.lang-btn');
+
   langButtons.forEach(function(btn, i) {
     var activeNo = i === 0 && lang === 'no';
     var activeEn = i === 1 && lang === 'en';
@@ -49,7 +50,7 @@ window.addEventListener('scroll', function() {
   var navbar = document.getElementById('navbar');
 
   if (navbar) {
-    navbar.classList.toggle('scrolled', Boolean(window.scrollY));
+    navbar.classList.toggle('scrolled', window.scrollY > 40);
   }
 });
 
@@ -62,7 +63,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
   var galleries = {
     '2': [
-      'images/travel-notes/Brazil_jan2015.jpg'
+      {
+        image: 'images/travel-notes/Brazil_jan2015.jpg',
+        title: 'Brazil',
+        text: 'Brazil, January 2015. A travel note from a journey shaped by light, movement and place.'
+      }
     ]
   };
 
@@ -73,13 +78,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     card.addEventListener('click', function() {
       var galleryId = card.getAttribute('data-gallery');
-      var images = galleries[galleryId];
+      var gallery = galleries[galleryId];
 
-      if (!images || images.length === 0) {
+      if (!gallery || gallery.length === 0) {
         return;
       }
 
       var current = 0;
+      var item = gallery[current];
 
       var overlay = document.createElement('div');
       overlay.style.position = 'fixed';
@@ -91,12 +97,40 @@ document.addEventListener('DOMContentLoaded', function() {
       overlay.style.zIndex = '9999';
       overlay.style.padding = '40px';
 
+      var content = document.createElement('div');
+      content.style.maxWidth = '92vw';
+      content.style.maxHeight = '92vh';
+      content.style.textAlign = 'center';
+
       var image = document.createElement('img');
-      image.src = images[current];
-      image.alt = 'Travel Notes';
+      image.src = item.image;
+      image.alt = item.title;
       image.style.maxWidth = '92vw';
-      image.style.maxHeight = '88vh';
+      image.style.maxHeight = '72vh';
       image.style.objectFit = 'contain';
+      image.style.display = 'block';
+      image.style.margin = '0 auto';
+
+      var captionTitle = document.createElement('h3');
+      captionTitle.textContent = item.title;
+      captionTitle.style.color = 'white';
+      captionTitle.style.marginTop = '20px';
+      captionTitle.style.marginBottom = '8px';
+      captionTitle.style.fontFamily = 'Cormorant Garamond, serif';
+      captionTitle.style.fontSize = '32px';
+      captionTitle.style.fontWeight = '300';
+
+      var captionText = document.createElement('p');
+      captionText.textContent = item.text;
+      captionText.style.color = 'rgba(255,255,255,0.72)';
+      captionText.style.maxWidth = '720px';
+      captionText.style.margin = '0 auto';
+      captionText.style.lineHeight = '1.7';
+      captionText.style.fontSize = '15px';
+
+      content.appendChild(image);
+      content.appendChild(captionTitle);
+      content.appendChild(captionText);
 
       var prevButton = document.createElement('button');
       prevButton.type = 'button';
@@ -137,7 +171,7 @@ document.addEventListener('DOMContentLoaded', function() {
       closeButton.style.fontSize = '42px';
       closeButton.style.cursor = 'pointer';
 
-      overlay.appendChild(image);
+      overlay.appendChild(content);
       overlay.appendChild(prevButton);
       overlay.appendChild(nextButton);
       overlay.appendChild(closeButton);
@@ -145,37 +179,39 @@ document.addEventListener('DOMContentLoaded', function() {
       document.body.appendChild(overlay);
       document.body.style.overflow = 'hidden';
 
+      function updateImage() {
+        var activeItem = gallery[current];
+        image.src = activeItem.image;
+        image.alt = activeItem.title;
+        captionTitle.textContent = activeItem.title;
+        captionText.textContent = activeItem.text;
+      }
+
       function closeOverlay() {
         overlay.remove();
         document.body.style.overflow = '';
+        document.removeEventListener('keydown', escapeClose);
       }
 
       prevButton.addEventListener('click', function(event) {
         event.stopPropagation();
-        closeOverlay();
-      });
 
-      closeButton.addEventListener('click', function(event) {
-        event.stopPropagation();
-        closeOverlay();
+        if (current === 0) {
+          closeOverlay();
+          return;
+        }
+
+        current = current - 1;
+        updateImage();
       });
 
       nextButton.addEventListener('click', function(event) {
         event.stopPropagation();
-      });
 
-      overlay.addEventListener('click', function(event) {
-        if (event.target === overlay) {
-          closeOverlay();
+        if (gallery.length <= 1) {
+          return;
         }
-      });
 
-      document.addEventListener('keydown', function escapeClose(event) {
-        if (event.key === 'Escape') {
-          closeOverlay();
-          document.removeEventListener('keydown', escapeClose);
-        }
-      });
-    });
-  });
-});
+        current = current + 1;
+
+        if (current
