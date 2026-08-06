@@ -137,20 +137,7 @@ document.addEventListener('DOMContentLoaded', function() {
       closeButton.style.fontSize = '42px';
       closeButton.style.cursor = 'pointer';
 
-      var container = document.createElement('div');
-container.style.textAlign = 'center';
-
-var caption = document.createElement('div');
-caption.innerHTML =
-  '<h3 style="color:white;margin-top:20px;font-family:Cormorant Garamond;">Brazil</h3>' +
-  '<p style="color:#cccccc;max-width:700px;margin:10px auto;">' +
-  'Rio de Janeiro, januar 2015. Bildet ble tatt under en reise gjennom Brasil og dokumenterer lys, stemning og hverdagsliv.' +
-  '</p>';
-
-container.appendChild(img);
-container.appendChild(caption);
-
-overlay.appendChild(container);
+      overlay.appendChild(image);
       overlay.appendChild(prevButton);
       overlay.appendChild(nextButton);
       overlay.appendChild(closeButton);
