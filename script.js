@@ -1,11 +1,12 @@
 function setLang(lang) {
   document.body.classList.toggle('en', lang === 'en');
 
-  document.querySelectorAll('.lang-btn').forEach(function(btn, i) {
-    btn.classList.toggle(
-      'active',
-      (i === 0 && lang === 'no') || (i === 1 && lang === 'en')
-    );
+  var langButtons = document.querySelectorAll('.lang-btn');
+
+  langButtons.forEach(function(btn, i) {
+    var activeNo = i === 0 && lang === 'no';
+    var activeEn = i === 1 && lang === 'en';
+    btn.classList.toggle('active', activeNo || activeEn);
   });
 
   var mlNo = document.getElementById('mlNo');
@@ -21,7 +22,9 @@ function toggleDrawer() {
   var drawer = document.getElementById('mobileDrawer');
   var btn = document.getElementById('hamburger');
 
-  if (!drawer || !btn) return;
+  if (!drawer || !btn) {
+    return;
+  }
 
   var isOpen = drawer.classList.toggle('open');
   btn.classList.toggle('open', isOpen);
@@ -32,59 +35,35 @@ function closeDrawer() {
   var drawer = document.getElementById('mobileDrawer');
   var btn = document.getElementById('hamburger');
 
-  if (drawer) drawer.classList.remove('open');
-  if (btn) btn.classList.remove('open');
+  if (drawer) {
+    drawer.classList.remove('open');
+  }
+
+  if (btn) {
+    btn.classList.remove('open');
+  }
 
   document.body.style.overflow = '';
 }
 
 window.addEventListener('scroll', function() {
   var navbar = document.getElementById('navbar');
+
   if (navbar) {
-    navbar.classList.toggle('scrolled', window.scrollY > 40);
+    navbar.classList.toggle('scrolled', Boolean(window.scrollY));
   }
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-  if ('IntersectionObserver' in window) {
-    var observer = new IntersectionObserver(function(entries) {
-      entries.forEach(function(e, i) {
-        if (e.isIntersecting) {
-          e.target.style.animationDelay = (i * 0.08) + 's';
-          e.target.classList.add('visible');
-          observer.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.12 });
+  var fadeItems = document.querySelectorAll('.fade-up');
 
-    document.querySelectorAll('.fade-up').forEach(function(el) {
-      observer.observe(el);
-    });
-  } else {
-    document.querySelectorAll('.fade-up').forEach(function(el) {
-      el.classList.add('visible');
-    });
-  }
+  fadeItems.forEach(function(item) {
+    item.classList.add('visible');
+  });
 
   var galleries = {
-    '1': [
-      'images/northern-silence/001.jpg'
-    ],
-
     '2': [
       'images/travel-notes/Brazil_jan2015.jpg'
-    ],
-
-    '3': [
-      'images/architecture/001.jpg'
-    ],
-
-    '4': [
-      'images/people/001.jpg'
-    ],
-
-    '5': [
-      'images/details/001.jpg'
     ]
   };
 
@@ -104,46 +83,61 @@ document.addEventListener('DOMContentLoaded', function() {
       var current = 0;
 
       var overlay = document.createElement('div');
-      overlay.id = 'photoOverlay';
-      overlay.setAttribute('role', 'dialog');
-      overlay.setAttribute('aria-label', 'Photo viewer');
+      overlay.style.position = 'fixed';
+      overlay.style.inset = '0';
+      overlay.style.background = 'rgba(0,0,0,0.94)';
+      overlay.style.display = 'flex';
+      overlay.style.justifyContent = 'center';
+      overlay.style.alignItems = 'center';
+      overlay.style.zIndex = '9999';
+      overlay.style.padding = '40px';
 
-      overlay.style.cssText = [
-        'position:fixed',
-        'inset:0',
-        'background:rgba(0,0,0,0.94)',
-        'display:flex',
-        'justify-content:center',
-        'align-items:center',
-        'z-index:9999',
-        'padding:4vh 5vw'
-      ].join(';');
+      var image = document.createElement('img');
+      image.src = images[current];
+      image.alt = 'Travel Notes';
+      image.style.maxWidth = '92vw';
+      image.style.maxHeight = '88vh';
+      image.style.objectFit = 'contain';
 
-      var img = document.createElement('img');
-      img.id = 'galleryImage';
-      img.src = images[current];
-      img.alt = 'Selected photograph';
-      img.style.cssText = [
-        'max-width:92vw',
-        'max-height:88vh',
-        'width:auto',
-        'height:auto',
-        'object-fit:contain',
-        'box-shadow:0 20px 80px rgba(0,0,0,0.45)'
-      ].join(';');
+      var prevButton = document.createElement('button');
+      prevButton.type = 'button';
+      prevButton.textContent = '‹';
+      prevButton.style.position = 'absolute';
+      prevButton.style.left = '24px';
+      prevButton.style.top = '50%';
+      prevButton.style.transform = 'translateY(-50%)';
+      prevButton.style.color = 'white';
+      prevButton.style.background = 'none';
+      prevButton.style.border = 'none';
+      prevButton.style.fontSize = '70px';
+      prevButton.style.cursor = 'pointer';
 
-      var prevBtn = document.createElement('button');
-      prevBtn.id = 'prevBtn';
-      prevBtn.type = 'button';
-      prevBtn.innerHTML = '&#10094;';
-      prevBtn.setAttribute('aria-label', 'Tilbake');
-      prevBtn.style.cssText = [
-        'position:absolute',
-        'left:24px',
-        'top:50%',
-        'transform:translateY(-50%)',
-        'color:white',
-        'font-size:56px',
-        'line-height:1',
-        'background:none',
-   
+      var nextButton = document.createElement('button');
+      nextButton.type = 'button';
+      nextButton.textContent = '›';
+      nextButton.style.position = 'absolute';
+      nextButton.style.right = '24px';
+      nextButton.style.top = '50%';
+      nextButton.style.transform = 'translateY(-50%)';
+      nextButton.style.color = 'white';
+      nextButton.style.background = 'none';
+      nextButton.style.border = 'none';
+      nextButton.style.fontSize = '70px';
+      nextButton.style.cursor = 'pointer';
+      nextButton.style.opacity = '0.25';
+
+      var closeButton = document.createElement('button');
+      closeButton.type = 'button';
+      closeButton.textContent = '×';
+      closeButton.style.position = 'absolute';
+      closeButton.style.top = '22px';
+      closeButton.style.right = '28px';
+      closeButton.style.color = 'white';
+      closeButton.style.background = 'none';
+      closeButton.style.border = 'none';
+      closeButton.style.fontSize = '42px';
+      closeButton.style.cursor = 'pointer';
+
+      overlay.appendChild(image);
+      overlay.appendChild(prevButton);
+      overlay.appendChild(nextButton)
