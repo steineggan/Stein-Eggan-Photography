@@ -95,6 +95,23 @@ function openTravelNotes() {
   backButton.style.fontSize = '13px';
   backButton.style.fontFamily = 'Syne, Arial, sans-serif';
 
+  var nextButton = document.createElement('button');
+  nextButton.type = 'button';
+  nextButton.textContent = 'Neste';
+  nextButton.style.position = 'absolute';
+  nextButton.style.right = '24px';
+  nextButton.style.top = '50%';
+  nextButton.style.transform = 'translateY(-50%)';
+  nextButton.style.color = '#ffffff';
+  nextButton.style.background = 'rgba(0,0,0,0.45)';
+  nextButton.style.border = '1px solid rgba(255,255,255,0.45)';
+  nextButton.style.padding = '11px 18px';
+  nextButton.style.cursor = 'pointer';
+  nextButton.style.letterSpacing = '0.12em';
+  nextButton.style.textTransform = 'uppercase';
+  nextButton.style.fontSize = '13px';
+  nextButton.style.fontFamily = 'Syne, Arial, sans-serif';
+    
   var closeButton = document.createElement('button');
   closeButton.type = 'button';
   closeButton.textContent = 'Lukk';
@@ -148,6 +165,18 @@ function openTravelNotes() {
     closeOverlay();
   });
 
+  nextButton.addEventListener('click', function(event) {
+  event.stopPropagation();
+
+  currentImage = currentImage + 1;
+
+  if (currentImage >= images.length) {
+    currentImage = 0;
+  }
+
+  image.src = images[currentImage];
+});
+    
   overlay.addEventListener('click', function(event) {
     if (event.target === overlay) {
       closeOverlay();
@@ -156,8 +185,10 @@ function openTravelNotes() {
 
   overlay.appendChild(image);
   overlay.appendChild(backButton);
+  overlay.appendChild(nextButton);
   overlay.appendChild(closeButton);
   overlay.appendChild(errorMessage);
+
 
   document.body.appendChild(overlay);
   document.body.style.overflow = 'hidden';
