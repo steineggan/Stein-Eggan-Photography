@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kontakt · Stein Eggan Photography</title>
+  <meta name="description" content="Contact Stein Eggan Photography for assignments, prints, licensing or collaborations." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <nav class="nav-simple">
+    <a href="index.html" class="logo">Stein Eggan <span>Photography</span></a>
+    <a href="index.html" class="nav-back">
+      <span>←</span>
+      <span data-lang="no">Tilbake til forsiden</span><span data-lang="en">Back to home</span>
+    </a>
+    <div class="lang-toggle">
+      <button class="lang-btn active" type="button">NO</button>
+      <button class="lang-btn" type="button">EN</button>
+    </div>
+  </nav>
+
+  <section class="contact-hero">
+    <div class="section-tag"><span data-lang="no">Kontakt</span><span data-lang="en">Contact</span></div>
+    <h1>
+      <span data-lang="no">La oss snakke om <em>bildene dine.</em></span>
+      <span data-lang="en">Let’s talk about <em>your photographs.</em></span>
+    </h1>
+    <p class="body-text">
+      <span data-lang="no">Ta kontakt for fotooppdrag, avtrykk, lisensiering, publisering eller samarbeid. Fyll ut skjemaet under, så svarer jeg normalt i løpet av noen dager.</span>
+      <span data-lang="en">Reach out for photo assignments, prints, licensing, publishing or collaborations. Fill in the form below and I will usually reply within a few days.</span>
+    </p>
+  </section>
+
+  <section class="contact-layout">
+    <div class="contact-info fade-up">
+      <div class="contact-info-row">
+        <span data-lang="no">E-post</span><span data-lang="en">Email</span>
+        <p id="contactEmailDisplay">post@example.com</p>
+      </div>
+      <div class="contact-info-row">
+        <span data-lang="no">Basert i</span><span data-lang="en">Based in</span>
+        <strong>Trondheim, Norway</strong>
+      </div>
+      <div class="contact-info-row">
+        <span data-lang="no">Tilgjengelig for</span><span data-lang="en">Available for</span>
+        <p>
+          <span data-lang="no">Oppdrag · Avtrykk · Lisensiering · Samarbeid</span>
+          <span data-lang="en">Assignments · Prints · Licensing · Collaborations</span>
+        </p>
+      </div>
+    </div>
+
+    <form class="contact-form fade-up" id="contactForm">
+      <div class="form-group">
+        <label for="contactName"><span data-lang="no">Navn</span><span data-lang="en">Name</span></label>
+        <input type="text" id="contactName" name="name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="contactEmail"><span data-lang="no">E-post</span><span data-lang="en">Email</span></label>
+        <input type="email" id="contactEmail" name="email" required>
+      </div>
+
+      <div class="form-group">
+        <label for="contactSubject"><span data-lang="no">Emne / Type henvendelse</span><span data-lang="en">Subject / Type of inquiry</span></label>
+        <select id="contactSubject" name="subject"></select>
+      </div>
+
+      <div class="form-group">
+        <label for="contactMessage"><span data-lang="no">Melding</span><span data-lang="en">Message</span></label>
+        <textarea id="contactMessage" name="message" required></textarea>
+      </div>
+
+      <button type="submit" class="form-submit">
+        <span data-lang="no">Send melding</span><span data-lang="en">Send message</span>
+      </button>
+
+      <p class="form-note">
+        <span data-lang="no">Denne knappen åpner din e-postklient med et ferdig utfylt notat til fotografen. Ingen data lagres eller sendes automatisk fra siden.</span>
+        <span data-lang="en">This button opens your email client with a pre-filled note to the photographer. No data is stored or sent automatically from this site.</span>
+      </p>
+
+      <p class="form-status" id="contactStatus"></p>
+    </form>
+  </section>
+
+  <footer>
+    <div class="footer-logo">Stein Eggan <span>Photography</span></div>
+    <span>© 2026 · Private photographic journal</span>
+    <span>Trondheim · Norway</span>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    /* ------------------------------------------------------------------
+     * Kontaktside — konfigurasjon
+     *
+     * TODO: Bytt ut CONTACT_EMAIL med den faktiske e-postadressen som
+     * skal motta henvendelser. Adressen brukes både i info-boksen og
+     * som mottaker i mailto-lenken skjemaet genererer.
+     * ------------------------------------------------------------------ */
+    var CONTACT_EMAIL = "YOUR_EMAIL_HERE";
+
+    /*
+     * TODO (fremtidig oppgradering — ekte e-postsending):
+     * Denne siden er statisk (GitHub + Vercel) og har ingen backend.
+     * Første versjon bruker derfor en mailto-lenke som åpner brukerens
+     * e-postklient med ferdig utfylt emne og melding. Dette er en
+     * ærlig og fungerende løsning, men krever at brukeren har en
+     * e-postklient koblet til nettleseren.
+     *
+     * For å sende skjemaet direkte fra siden uten mailto, koble til en
+     * av disse løsningene senere:
+     *   1. Formspree:   <form action="https://formspree.io/f/DITT_SKJEMA_ID" method="POST">
+     *   2. Netlify Forms: legg til data-netlify="true" på <form> (krever hosting på Netlify)
+     *   3. Vercel Serverless Function: opprett /api/contact.js som tar imot
+     *      POST-forespørsler og sender e-post via f.eks. Resend eller SendGrid,
+     *      og endre denne scriptblokken til å gjøre fetch('/api/contact', ...)
+     *      i stedet for å bygge en mailto-lenke.
+     */
+
+    var subjectOptions = {
+      no: [
+        'Generell henvendelse',
+        'Fotooppdrag',
+        'Avtrykk / print',
+        'Lisensiering',
+        'Samarbeid',
+        'Annet'
+      ],
+      en: [
+        'General inquiry',
+        'Photo assignment',
+        'Print request',
+        'Licensing',
+        'Collaboration',
+        'Other'
+      ]
+    };
+
+    function renderSubjectOptions(lang) {
+      var select = document.getElementById('contactSubject');
+      if (!select) return;
+
+      var previousIndex = select.selectedIndex >= 0 ? select.selectedIndex : 0;
+      var options = subjectOptions[lang] || subjectOptions.no;
+
+      select.innerHTML = '';
+
+      options.forEach(function(label) {
+        var option = document.createElement('option');
+        option.textContent = label;
+        select.appendChild(option);
+      });
+
+      if (previousIndex >= 0 && previousIndex < select.options.length) {
+        select.selectedIndex = previousIndex;
+      }
+    }
+
+    function setContactLang(lang) {
+      setLang(lang);
+      renderSubjectOptions(lang);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      var emailDisplay = document.getElementById('contactEmailDisplay');
+      if (emailDisplay) {
+        emailDisplay.textContent = CONTACT_EMAIL;
+      }
+
+      renderSubjectOptions('no');
+
+      var langButtons = document.querySelectorAll('.lang-btn');
+      langButtons.forEach(function(button, index) {
+        button.addEventListener('click', function() {
+          setContactLang(index === 0 ? 'no' : 'en');
+        });
+      });
+
+      var form = document.getElementById('contactForm');
+      var status = document.getElementById('contactStatus');
+
+      if (form) {
+        form.addEventListener('submit', function(event) {
+          event.preventDefault();
+
+          var name = document.getElementById('contactName').value.trim();
+          var email = document.getElementById('contactEmail').value.trim();
+          var subjectSelect = document.getElementById('contactSubject');
+          var subject = subjectSelect.options[subjectSelect.selectedIndex] ? subjectSelect.options[subjectSelect.selectedIndex].textContent : '';
+          var message = document.getElementById('contactMessage').value.trim();
+
+          if (!CONTACT_EMAIL || CONTACT_EMAIL === 'YOUR_EMAIL_HERE') {
+            if (status) {
+              status.textContent = document.body.classList.contains('en')
+                ? 'The contact email has not been configured yet. Please set CONTACT_EMAIL in contact.html.'
+                : 'Kontakt-e-posten er ikke konfigurert ennå. Sett CONTACT_EMAIL i contact.html.';
+              status.classList.add('visible');
+            }
+            return;
+          }
+
+          var body = 'Navn / Name: ' + name + '\n' +
+                      'E-post / Email: ' + email + '\n\n' +
+                      message;
+
+          var mailtoUrl = 'mailto:' + encodeURIComponent(CONTACT_EMAIL) +
+                           '?subject=' + encodeURIComponent(subject) +
+                           '&body=' + encodeURIComponent(body);
+
+          window.location.href = mailtoUrl;
+
+          if (status) {
+            status.textContent = document.body.classList.contains('en')
+              ? 'Your email client should now open with the message ready to send.'
+              : 'E-postklienten din skal nå åpne seg med meldingen klar til å sendes.';
+            status.classList.add('visible');
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -16,8 +17,7 @@
     <a href="#today" onclick="closeDrawer()"><span data-lang="no">Dagens bilde</span><span data-lang="en">Today</span></a>
     <a href="#collections" onclick="closeDrawer()"><span data-lang="no">Samlinger</span><span data-lang="en">Collections</span></a>
     <a href="#expeditions" onclick="closeDrawer()">Expeditions</a>
-    <a href="#archive" onclick="closeDrawer()"><span data-lang="no">Arkiv</span><span data-lang="en">Archive</span></a>
-    <a href="#private" onclick="closeDrawer()">Private Circle</a>
+    <a href="#contact" onclick="closeDrawer()"><span data-lang="no">Kontakt</span><span data-lang="en">Contact</span></a>
     <a href="#about" onclick="closeDrawer()"><span data-lang="no">Om</span><span data-lang="en">About</span></a>
     <div class="mobile-lang">
       <button id="mlNo" class="active" onclick="setLang('no')">NO</button>
@@ -32,8 +32,7 @@
       <li><a href="#today"><span data-lang="no">Dagens bilde</span><span data-lang="en">Today</span></a></li>
       <li><a href="#collections"><span data-lang="no">Samlinger</span><span data-lang="en">Collections</span></a></li>
       <li><a href="#expeditions">Expeditions</a></li>
-      <li><a href="#archive"><span data-lang="no">Arkiv</span><span data-lang="en">Archive</span></a></li>
-      <li><a href="#private">Private Circle</a></li>
+      <li><a href="#contact"><span data-lang="no">Kontakt</span><span data-lang="en">Contact</span></a></li>
       <li><a href="#about"><span data-lang="no">Om</span><span data-lang="en">About</span></a></li>
     </ul>
     <div class="lang-toggle">
@@ -139,7 +138,7 @@
 
   <div class="collection-grid">
 
-    <article class="collection-card large fade-up" data-gallery="1"
+    <article class="collection-card large fade-up" data-gallery="northern-silence"
       style="background-image:url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1600&q=90')">
       <div>
         <span>01</span>
@@ -148,7 +147,7 @@
       </div>
     </article>
 
-    <article class="collection-card fade-up" data-gallery="2"
+    <article class="collection-card fade-up" data-gallery="travel-notes"
       style="background-image:url('https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1200&q=90')">
       <div>
         <span>02</span>
@@ -157,7 +156,7 @@
       </div>
     </article>
 
-    <article class="collection-card fade-up" data-gallery="3"
+    <article class="collection-card fade-up" data-gallery="architecture"
       style="background-image:url('https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=1200&q=90')">
       <div>
         <span>03</span>
@@ -166,7 +165,7 @@
       </div>
     </article>
 
-    <article class="collection-card fade-up" data-gallery="4"
+    <article class="collection-card fade-up" data-gallery="people"
       style="background-image:url('https://images.unsplash.com/photo-1493246507139-91e8fad9978e?auto=format&fit=crop&w=1200&q=90')">
       <div>
         <span>04</span>
@@ -175,7 +174,7 @@
       </div>
     </article>
 
-    <article class="collection-card fade-up" data-gallery="5"
+    <article class="collection-card fade-up" data-gallery="details"
       style="background-image:url('https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=1200&q=90')">
       <div>
         <span>05</span>
@@ -186,27 +185,24 @@
 
   </div>
 
-</section>  </section>
+</section>
 
   <section id="expeditions" class="expeditions-section">
     <div class="expedition-copy fade-up">
       <div class="section-tag">Expedition Map</div>
       <h2><span data-lang="no">Steder dokumentert</span><span data-lang="en">Places documented</span></h2>
       <p class="body-text">
-        <span data-lang="no">Et visuelt kart over reiser, serier og geografiske spor. Hvert sted kan knyttes til bilder, notater og samlinger.</span>
-        <span data-lang="en">A visual map of journeys, series and geographic traces. Each place can connect to images, notes and collections.</span>
+        <span data-lang="no">Et interaktivt kart over reiser, serier og geografiske spor. Klikk på en markør for å se sted, region og tilhørende samling.</span>
+        <span data-lang="en">An interactive map of journeys, series and geographic traces. Click a marker to see the place, region and related collection.</span>
       </p>
     </div>
     <div class="map-layout fade-up">
-      <div class="map-visual">
-        <span class="pin pin-1">•</span><span class="pin pin-2">•</span><span class="pin pin-3">•</span><span class="pin pin-4">•</span>
-        <div class="map-caption">Norway · Sweden · Germany · Italy</div>
-      </div>
+      <div class="map-visual" id="expeditionMap" role="img" aria-label="Interactive expedition map"></div>
       <div class="location-list">
-        <div class="location"><strong>Norway</strong><span>186 photographs · 8 collections</span></div>
-        <div class="location"><strong>Sweden</strong><span>42 photographs · 2 collections</span></div>
-        <div class="location"><strong>Germany</strong><span>31 photographs · 1 collection</span></div>
-        <div class="location"><strong>Italy</strong><span>24 photographs · 1 collection</span></div>
+        <div class="location" data-gallery="regions-norway"><strong>Norway</strong><span><span data-lang="no">Se samling</span><span data-lang="en">View collection</span></span></div>
+        <div class="location" data-gallery="regions-europe"><strong>Europe</strong><span><span data-lang="no">Se samling</span><span data-lang="en">View collection</span></span></div>
+        <div class="location" data-gallery="regions-asia-pacific"><strong>Asia/Pacific</strong><span><span data-lang="no">Se samling</span><span data-lang="en">View collection</span></span></div>
+        <div class="location" data-gallery="regions-americas"><strong>Americas</strong><span><span data-lang="no">Se samling</span><span data-lang="en">View collection</span></span></div>
       </div>
     </div>
   </section>
@@ -224,22 +220,12 @@
     </article>
   </section>
 
-  <section id="archive" class="archive-section">
-    <div class="section-tag"><span data-lang="no">Arkiv</span><span data-lang="en">Archive</span></div>
-    <h2><span data-lang="no">Fotografisk arkiv</span><span data-lang="en">Photography archive</span></h2>
-    <div class="archive-grid fade-up">
-      <a href="#collections"><strong>2026</strong><span>July · June · May</span></a>
-      <a href="#collections"><strong>2025</strong><span>Travel · Norway · Details</span></a>
-      <a href="#collections"><strong>2024</strong><span>Early studies · Places</span></a>
-    </div>
-  </section>
-
-  <section id="private" class="private-section">
+  <section id="contact" class="private-section">
     <div class="private-card fade-up">
-      <div class="section-tag">Private Circle</div>
-      <h2><span data-lang="no">Kun for inviterte</span><span data-lang="en">Invitation only</span></h2>
-      <p><span data-lang="no">Private samlinger, reisebilder og personlige serier kan deles med en begrenset krets. Denne delen kan senere kobles til passord, innlogging eller medlemsområde.</span><span data-lang="en">Private collections, travel images and personal series can be shared with a limited circle. This section can later be connected to password access, sign-in or a members area.</span></p>
-      <a href="mailto:post@example.com" class="hero-cta"><span data-lang="no">Be om tilgang</span><span data-lang="en">Request access</span><span>→</span></a>
+      <div class="section-tag"><span data-lang="no">Kontakt</span><span data-lang="en">Contact</span></div>
+      <h2><span data-lang="no">La oss ta kontakt</span><span data-lang="en">Let’s get in touch</span></h2>
+      <p><span data-lang="no">Ta kontakt for oppdrag, avtrykk, lisensiering eller samarbeid. Jeg svarer normalt i løpet av noen dager.</span><span data-lang="en">Reach out for assignments, prints, licensing or collaborations. I usually reply within a few days.</span></p>
+      <a href="contact.html" class="hero-cta"><span data-lang="no">Kontakt meg</span><span data-lang="en">Contact me</span><span>→</span></a>
     </div>
   </section>
 
@@ -260,6 +246,8 @@
     <span>Trondheim · Norway</span>
   </footer>
 
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="photo-data.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
