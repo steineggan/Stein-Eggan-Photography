@@ -94,6 +94,7 @@ var GALLERY_DATA = {
     images: [
       'images/people/people_001.jpg',
       'images/people/people_002.jpg'
+      'images/people/IMG_4081.jpg'
     ]
   },
   'details': {
