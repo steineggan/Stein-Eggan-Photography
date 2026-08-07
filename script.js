@@ -1,3 +1,14 @@
+/* ------------------------------------------------------------------
+ * script.js
+ * Stein Eggan Photography Journal
+ * ------------------------------------------------------------------
+ * Innhold:
+ * 1. Språkbytte (NO/EN) og mobilmeny
+ * 2. Fade-in for seksjoner
+ * 3. Generisk galleri-/lightbox-system (Samlinger + Expeditions-regioner)
+ * 4. Interaktivt Expeditions-kart (Leaflet + fallback-data)
+ * ------------------------------------------------------------------ */
+
 function setLang(lang) {
   document.body.classList.toggle('en', lang === 'en');
 
@@ -45,19 +56,97 @@ function showAllFadeItems() {
   });
 }
 
-function openTravelNotes() {
-   var images = [
-    'images/travel-notes/Brazil_jan2015.jpg',
-    'images/travel-notes/mississippi_des2007.jpg'
-  ];
+/* ------------------------------------------------------------------
+ * GALLERY_DATA
+ * Enkel, robust datastruktur for alle bildegallerier på siden.
+ *
+ * Hver nøkkel tilsvarer verdien i attributtet data-gallery på et
+ * klikkbart kort/element. "images" er en liste med filstier under
+ * images/-mappen. Listen kan være tom mens bilder mangler - da
+ * viser siden en diskret "kommer snart"-melding i stedet for å
+ * krasje eller åpne et tomt galleri.
+ *
+ * SLIK LEGGER DU TIL FLERE BILDER:
+ * 1. Last opp bildefilene i riktig undermappe under images/.
+ * 2. Legg filstien til i riktig "images"-liste under (rekkefølgen
+ *    i listen er rekkefølgen bildene vises i).
+ * 3. Ikke noe annet i koden må endres - kortet finner galleriet
+ *    automatisk via data-gallery-attributtet i HTML-en.
+ * ------------------------------------------------------------------ */
+var GALLERY_DATA = {
+  'northern-silence': {
+    title: 'Northern Silence',
+    images: []
+  },
+  'travel-notes': {
+    title: 'Travel Notes',
+    images: [
+      'images/travel-notes/Brazil_jan2015.jpg',
+      'images/travel-notes/mississippi_des2007.jpg'
+    ]
+  },
+  'architecture': {
+    title: 'Architecture',
+    images: []
+  },
+  'people': {
+    title: 'People',
+    images: []
+  },
+  'details': {
+    title: 'Details',
+    images: []
+  },
+  'regions-norway': {
+    title: 'Norway',
+    images: []
+  },
+  'regions-europe': {
+    title: 'Europe',
+    images: []
+  },
+  'regions-asia-pacific': {
+    title: 'Asia / Pacific',
+    images: []
+  },
+  'regions-americas': {
+    title: 'Americas',
+    images: []
+  }
+};
 
+function makeOverlayButton(label, position) {
+  var button = document.createElement('button');
+  button.type = 'button';
+  button.textContent = label;
+  button.style.position = 'absolute';
+  button.style.color = '#ffffff';
+  button.style.background = 'rgba(0,0,0,0.45)';
+  button.style.border = '1px solid rgba(255,255,255,0.45)';
+  button.style.padding = '11px 18px';
+  button.style.cursor = 'pointer';
+  button.style.letterSpacing = '0.12em';
+  button.style.textTransform = 'uppercase';
+  button.style.fontSize = '13px';
+  button.style.fontFamily = 'Syne, Arial, sans-serif';
+
+  for (var key in position) {
+    if (Object.prototype.hasOwnProperty.call(position, key)) {
+      button.style[key] = position[key];
+    }
+  }
+
+  return button;
+}
+
+function openGalleryOverlay(images, title) {
   var currentImage = 0;
 
-  var oldOverlay = document.getElementById('travelNotesOverlay');
+  var oldOverlay = document.getElementById('galleryOverlay');
   if (oldOverlay) oldOverlay.remove();
 
   var overlay = document.createElement('div');
-  overlay.id = 'travelNotesOverlay';
+  overlay.id = 'galleryOverlay';
   overlay.style.position = 'fixed';
   overlay.style.left = '0';
   overlay.style.top = '0';
@@ -72,60 +161,26 @@ function openTravelNotes() {
 
   var image = document.createElement('img');
   image.src = images[currentImage];
-  image.alt = 'Brazil';
+  image.alt = title || 'Photograph';
   image.style.maxWidth = '92vw';
   image.style.maxHeight = '86vh';
   image.style.objectFit = 'contain';
   image.style.display = 'block';
 
-  var backButton = document.createElement('button');
-  backButton.type = 'button';
-  backButton.textContent = 'Tilbake';
-  backButton.style.position = 'absolute';
-  backButton.style.left = '24px';
-  backButton.style.top = '24px';
-  backButton.style.color = '#ffffff';
-  backButton.style.background = 'rgba(0,0,0,0.45)';
-  backButton.style.border = '1px solid rgba(255,255,255,0.45)';
-  backButton.style.padding = '11px 18px';
-  backButton.style.cursor = 'pointer';
-  backButton.style.letterSpacing = '0.12em';
-  backButton.style.textTransform = 'uppercase';
-  backButton.style.fontSize = '13px';
-  backButton.style.fontFamily = 'Syne, Arial, sans-serif';
+  var backButton = makeOverlayButton('Tilbake', { left: '24px', top: '24px' });
+  var nextButton = makeOverlayButton('Neste', { right: '24px', top: '50%', transform: 'translateY(-50%)' });
+  var closeButton = makeOverlayButton('Lukk', { right: '24px', top: '24px' });
 
-  var nextButton = document.createElement('button');
-  nextButton.type = 'button';
-  nextButton.textContent = 'Neste';
-  nextButton.style.position = 'absolute';
-  nextButton.style.right = '24px';
-  nextButton.style.top = '50%';
-  nextButton.style.transform = 'translateY(-50%)';
-  nextButton.style.color = '#ffffff';
-  nextButton.style.background = 'rgba(0,0,0,0.45)';
-  nextButton.style.border = '1px solid rgba(255,255,255,0.45)';
-  nextButton.style.padding = '11px 18px';
-  nextButton.style.cursor = 'pointer';
-  nextButton.style.letterSpacing = '0.12em';
-  nextButton.style.textTransform = 'uppercase';
-  nextButton.style.fontSize = '13px';
-  nextButton.style.fontFamily = 'Syne, Arial, sans-serif';
-    
-  var closeButton = document.createElement('button');
-  closeButton.type = 'button';
-  closeButton.textContent = 'Lukk';
-  closeButton.style.position = 'absolute';
-  closeButton.style.right = '24px';
-  closeButton.style.top = '24px';
-  closeButton.style.color = '#ffffff';
-  closeButton.style.background = 'rgba(0,0,0,0.45)';
-  closeButton.style.border = '1px solid rgba(255,255,255,0.45)';
-  closeButton.style.padding = '11px 18px';
-  closeButton.style.cursor = 'pointer';
-  closeButton.style.letterSpacing = '0.12em';
-  closeButton.style.textTransform = 'uppercase';
-  closeButton.style.fontSize = '13px';
-  closeButton.style.fontFamily = 'Syne, Arial, sans-serif';
+  var counter = document.createElement('div');
+  counter.style.position = 'absolute';
+  counter.style.left = '50%';
+  counter.style.top = '24px';
+  counter.style.transform = 'translateX(-50%)';
+  counter.style.color = 'rgba(255,255,255,0.75)';
+  counter.style.fontFamily = 'Syne, Arial, sans-serif';
+  counter.style.fontSize = '12px';
+  counter.style.letterSpacing = '0.14em';
+  counter.style.textTransform = 'uppercase';
 
   var errorMessage = document.createElement('div');
   errorMessage.textContent = 'Bildet kunne ikke lastes. Kontroller filnavn og mappe.';
@@ -138,15 +193,35 @@ function openTravelNotes() {
   errorMessage.style.background = 'rgba(0,0,0,0.7)';
   errorMessage.style.padding = '12px 18px';
 
+  function updateCounter() {
+    counter.textContent = (currentImage + 1) + ' / ' + images.length;
+  }
+
+  function showImage() {
+    errorMessage.style.display = 'none';
+    image.src = images[currentImage];
+    updateCounter();
+  }
+
   function closeOverlay() {
     overlay.remove();
     document.body.style.overflow = '';
     document.removeEventListener('keydown', onKeyDown);
   }
 
+  function goNext() {
+    currentImage = currentImage + 1;
+    if (currentImage >= images.length) {
+      currentImage = 0;
+    }
+    showImage();
+  }
+
   function onKeyDown(event) {
     if (event.key === 'Escape' || event.key === 'ArrowLeft') {
       closeOverlay();
+    } else if (event.key === 'ArrowRight') {
+      goNext();
     }
   }
 
@@ -165,58 +240,194 @@ function openTravelNotes() {
   });
 
   nextButton.addEventListener('click', function(event) {
-  event.stopPropagation();
+    event.stopPropagation();
+    goNext();
+  });
 
-  currentImage = currentImage + 1;
-
-  if (currentImage >= images.length) {
-    currentImage = 0;
-  }
-
-  image.src = images[currentImage];
-});
-    
   overlay.addEventListener('click', function(event) {
     if (event.target === overlay) {
       closeOverlay();
     }
   });
 
+  if (images.length > 1) {
+    overlay.appendChild(nextButton);
+    overlay.appendChild(counter);
+  }
+
   overlay.appendChild(image);
   overlay.appendChild(backButton);
-  overlay.appendChild(nextButton);
   overlay.appendChild(closeButton);
   overlay.appendChild(errorMessage);
 
+  document.body.appendChild(overlay);
+  document.body.style.overflow = 'hidden';
+  document.addEventListener('keydown', onKeyDown);
 
+  updateCounter();
+}
+
+function openComingSoonOverlay() {
+  var oldOverlay = document.getElementById('galleryOverlay');
+  if (oldOverlay) oldOverlay.remove();
+
+  var overlay = document.createElement('div');
+  overlay.id = 'galleryOverlay';
+  overlay.style.position = 'fixed';
+  overlay.style.left = '0';
+  overlay.style.top = '0';
+  overlay.style.right = '0';
+  overlay.style.bottom = '0';
+  overlay.style.background = 'rgba(0,0,0,0.85)';
+  overlay.style.zIndex = '999999';
+  overlay.style.display = 'flex';
+  overlay.style.alignItems = 'center';
+  overlay.style.justifyContent = 'center';
+  overlay.style.padding = '40px';
+
+  var box = document.createElement('div');
+  box.style.background = '#0f1117';
+  box.style.border = '1px solid rgba(255,255,255,0.16)';
+  box.style.color = '#f5f3ef';
+  box.style.padding = '2.6rem 3rem';
+  box.style.textAlign = 'center';
+  box.style.maxWidth = '420px';
+  box.style.fontFamily = 'Syne, Arial, sans-serif';
+
+  var text = document.createElement('p');
+  text.style.fontSize = '0.95rem';
+  text.style.letterSpacing = '0.02em';
+  text.style.lineHeight = '1.7';
+  text.style.marginBottom = '1.5rem';
+  text.innerHTML = '<span data-lang="no">Denne samlingen er under arbeid. Nye bilder legges til fortløpende.</span><span data-lang="en">This collection is being prepared. New photographs will be added soon.</span>';
+
+  var closeButton = document.createElement('button');
+  closeButton.type = 'button';
+  closeButton.textContent = 'OK';
+  closeButton.style.color = '#0f1117';
+  closeButton.style.background = '#d4b47a';
+  closeButton.style.border = '0';
+  closeButton.style.padding = '11px 26px';
+  closeButton.style.cursor = 'pointer';
+  closeButton.style.letterSpacing = '0.12em';
+  closeButton.style.textTransform = 'uppercase';
+  closeButton.style.fontSize = '12px';
+  closeButton.style.fontFamily = 'Syne, Arial, sans-serif';
+
+  function closeOverlay() {
+    overlay.remove();
+    document.body.style.overflow = '';
+    document.removeEventListener('keydown', onKeyDown);
+  }
+
+  function onKeyDown(event) {
+    if (event.key === 'Escape') closeOverlay();
+  }
+
+  closeButton.addEventListener('click', function(event) {
+    event.stopPropagation();
+    closeOverlay();
+  });
+
+  overlay.addEventListener('click', function(event) {
+    if (event.target === overlay) closeOverlay();
+  });
+
+  box.appendChild(text);
+  box.appendChild(closeButton);
+  overlay.appendChild(box);
   document.body.appendChild(overlay);
   document.body.style.overflow = 'hidden';
   document.addEventListener('keydown', onKeyDown);
 }
 
-function connectTravelNotesCard() {
-  var travelCard = document.querySelector('.collection-card[data-gallery="2"]');
+function openGallery(key) {
+  var gallery = GALLERY_DATA[key];
 
-  if (!travelCard) {
-    var cards = document.querySelectorAll('.collection-card');
-
-    cards.forEach(function(card) {
-      var heading = card.querySelector('h3');
-
-      if (heading && heading.textContent.trim().toLowerCase() === 'travel notes') {
-        travelCard = card;
-      }
-    });
+  if (!gallery || !gallery.images || gallery.images.length === 0) {
+    openComingSoonOverlay();
+    return;
   }
 
-  if (!travelCard) return;
+  openGalleryOverlay(gallery.images, gallery.title);
+}
 
-  travelCard.style.cursor = 'pointer';
+function wireGalleryTriggers() {
+  var triggers = document.querySelectorAll('[data-gallery]');
 
-  travelCard.addEventListener('click', function(event) {
-    event.preventDefault();
-    openTravelNotes();
+  triggers.forEach(function(trigger) {
+    trigger.style.cursor = 'pointer';
+
+    trigger.addEventListener('click', function(event) {
+      event.preventDefault();
+      var key = trigger.getAttribute('data-gallery');
+      openGallery(key);
+    });
   });
+}
+
+/* ------------------------------------------------------------------
+ * Expeditions-kart (Leaflet + PHOTO_LOCATIONS-fallback)
+ *
+ * Kartet bruker PHOTO_LOCATIONS fra photo-data.js som datakilde.
+ * Siden dette er en statisk side uten byggeprosess, hentes ikke
+ * GPS-koordinater automatisk fra EXIF ved sidelasting - de legges
+ * inn manuelt i photo-data.js (se dokumentasjon der). Dersom
+ * Leaflet ikke laster (f.eks. blokkert nettverk), feiler ikke
+ * siden - kartfeltet viser da en enkel tekstmelding i stedet.
+ * ------------------------------------------------------------------ */
+function initExpeditionMap() {
+  var mapEl = document.getElementById('expeditionMap');
+  if (!mapEl) return;
+
+  var locations = (typeof PHOTO_LOCATIONS !== 'undefined') ? PHOTO_LOCATIONS : [];
+
+  if (typeof L === 'undefined') {
+    mapEl.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:rgba(245,243,239,0.6);font-family:Syne,Arial,sans-serif;font-size:0.85rem;letter-spacing:0.08em;text-align:center;padding:2rem;">Kartet kunne ikke lastes.</div>';
+    return;
+  }
+
+  try {
+    var map = L.map(mapEl, {
+      scrollWheelZoom: false,
+      worldCopyJump: true
+    }).setView([25, 15], 2);
+
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; OpenStreetMap &copy; CARTO',
+      maxZoom: 18,
+      subdomains: 'abcd'
+    }).addTo(map);
+
+    var goldIcon = L.divIcon({
+      className: 'expedition-marker',
+      html: '<span></span>',
+      iconSize: [16, 16],
+      iconAnchor: [8, 8]
+    });
+
+    locations.forEach(function(loc) {
+      if (typeof loc.lat !== 'number' || typeof loc.lng !== 'number') return;
+
+      var marker = L.marker([loc.lat, loc.lng], { icon: goldIcon }).addTo(map);
+
+      var popupHtml = '<div class="expedition-popup">' +
+        '<strong>' + loc.title + '</strong>' +
+        '<span class="expedition-popup-region">' + (loc.region || '') + '</span>' +
+        '<span class="expedition-popup-series">' + (loc.series || '') + '</span>' +
+        (loc.link ? '<a href="' + loc.link + '">' +
+          '<span data-lang="no">Se samling</span><span data-lang="en">View collection</span></a>' : '') +
+        '</div>';
+
+      marker.bindPopup(popupHtml);
+    });
+
+    setTimeout(function() {
+      map.invalidateSize();
+    }, 200);
+  } catch (error) {
+    mapEl.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:rgba(245,243,239,0.6);font-family:Syne,Arial,sans-serif;font-size:0.85rem;letter-spacing:0.08em;text-align:center;padding:2rem;">Kartet kunne ikke lastes.</div>';
+  }
 }
 
 window.addEventListener('scroll', function() {
@@ -229,5 +440,6 @@ window.addEventListener('scroll', function() {
 
 document.addEventListener('DOMContentLoaded', function() {
   showAllFadeItems();
-  connectTravelNotesCard();
+  wireGalleryTriggers();
+  initExpeditionMap();
 });
