@@ -91,7 +91,10 @@ var GALLERY_DATA = {
   },
   'people': {
     title: 'People',
-    images: []
+    images: [
+      'images/people/people_001.jpg',
+      'images/people/people_002-jpg'
+    ]
   },
   'details': {
     title: 'Details',
