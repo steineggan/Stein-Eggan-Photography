@@ -93,8 +93,7 @@ var GALLERY_DATA = {
     title: 'People',
     images: [
       'images/people/people_001.jpg',
-      'images/people/people_002.jpg'
-      'images/people/IMG_4081.HEIC'
+      'images/people/people_002.jpg'      
     ]
   },
   'details': {
