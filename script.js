@@ -102,7 +102,9 @@ var GALLERY_DATA = {
   },
   'regions-norway': {
     title: 'Norway',
-    images: []
+    images: [
+      'images/regions/norway/IMG_9898.jpg'
+    ]
   },
   'regions-europe': {
     title: 'Europe',
